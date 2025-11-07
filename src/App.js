@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,6 +18,50 @@ import {
   faInstagram,
   faApple,
 } from "@fortawesome/free-brands-svg-icons";
+
+// Typing effect component used in the hero section
+function TypingHero() {
+  const [text, setText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const sentences = [
+      "Where writers thrive",
+      "Unleashing imagination through collaborative writing",
+      "Expressing unique thoughts",
+    ];
+    const current = sentences[index];
+    let timeout;
+
+    if (!isDeleting && text === current) {
+      // pause before deleting
+      timeout = setTimeout(() => setIsDeleting(true), 1200);
+    } else if (isDeleting && text === "") {
+      // move to next sentence after a short pause
+      timeout = setTimeout(() => {
+        setIsDeleting(false);
+        setIndex((i) => (i + 1) % sentences.length);
+      }, 500);
+    } else {
+      // type or delete a character
+      timeout = setTimeout(() => {
+        setText((prev) =>
+          isDeleting ? current.slice(0, prev.length - 1) : current.slice(0, prev.length + 1)
+        );
+      }, isDeleting ? 50 : 100);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [text, isDeleting, index]);
+
+  return (
+    <p className="typed-text">
+      {text}
+      <span className="cursor">|</span>
+    </p>
+  );
+}
 
 function App() {
   return (
@@ -85,7 +129,8 @@ function App() {
           <h1>
             <span className="highlight">Word</span> at a Time
           </h1>
-          <p>Expressing unique thoughts a</p>
+          {/* Typing effect - rotates through three sentences */}
+          <TypingHero />
           <button className="cta-button">GET STARTED</button>
         </div>
       </section>

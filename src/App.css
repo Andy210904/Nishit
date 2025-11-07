@@ -134,6 +134,28 @@ body {
   opacity: 0.9;
 }
 
+.typed-text {
+  font-size: 18px;
+  margin-bottom: 30px;
+  opacity: 0.9;
+  min-height: 25px;
+  color: #ffffff;
+}
+
+.cursor {
+  color: #3498db;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
 .cta-button {
   background: transparent;
   border: 2px solid #ffffff;
